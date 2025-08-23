@@ -28,9 +28,9 @@ def main():
     result = calculate_sum(numbers)
     print(f"Final result: {result}")
     
-    logging.log(logging.INFO, "# This line will cause our program to crash!")
+    logging.log(logging.INFO, "# This line will cause our program to crash if dividing by 0!")
 
-    # This line will cause our program to crash!
+    # This line will cause our program to crash if dividing by 0!!
     division_result = 10 / 5
     print(f"Division result: {division_result}")
 

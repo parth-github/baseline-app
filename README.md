@@ -1,20 +1,33 @@
 # Python App in Docker with Logging
 
-Run Commands
+### Run Commands
 
 ```bash
-docker build -t pyapp-integration/logging:v2 .
+docker build -t baseline-pyapp/docker-logging:v1 .
 ```
+
+## Run with Volume mounting for live edits
+
+```bash
+docker run --name baseline-pyapp-docker-logging-v1 -v .:/app -p 5678:5678 baseline-pyapp/docker-logging:v1
+
 
 ## Run Interactively
 
 ```bash
-docker run --name pyapp-integration-logging-v2 -it -v .:/app -p 5678:5678 pyapp-integration/logging:v2 /bin/bash
+docker exec -it baseline-pyapp-docker-logging-v1 /bin/bash
+```
+
+## OR
+
+```bash
+
+docker run --name baseline-pyapp-docker-logging-v1 -it -v .:/app -p 5678:5678 baseline-pyapp/docker-logging:v1 /bin/bash
 
 pwd
 ls -la
 cat app.py
-python3 app.py
+python app.py
  
 # You'll also see the error:
 
@@ -34,24 +47,8 @@ Traceback (most recent call last):
 ZeroDivisionError: division by zero
 ```
 
-## Volume mounting for live edits
+
 
 ```bash
 docker run -it -v $(pwd):/app my-python-app /bin/bash
-```
-
-### Run with DockerfileRemoteDebugger
-
-```bash
-docker build -t debug/python-function:v1  -f DockerfileRemoteDebugger .
-
-docker run --name debug-python-function-v1 -it -v .:/app -p 5678:5678 debug/python-function:v1 /bin/bash
-```
-
-#### OR
-
-```bash
-docker run --name debug-python-function-v1 -v .:/app -p 5678:5678 debug/python-function:v1
-
-docker exec -it debug-python-function-v1 /bin/bash
 ```
