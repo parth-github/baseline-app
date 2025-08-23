@@ -9,7 +9,7 @@ os.makedirs("logs", exist_ok=True)
 logging.basicConfig(
     level=logging.DEBUG,
     filename="logs/app.log",           # Log messages to 'app.log'
-    filemode="a",                 # Append mode
+    filemode="w",                 # Overwrite mode
     format="%(asctime)s %(levelname)s %(message)s"
 )
 

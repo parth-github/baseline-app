@@ -24,6 +24,9 @@ docker exec -it baseline-pyapp-docker-remote-debugging-v2 /bin/bash
 
 docker run --name baseline-pyapp-docker-remote-debugging-v2 -it --rm -v .:/app -p 5678:5678 baseline-pyapp/docker-remote-debugging:v2 /bin/bash
 
+# Without mounting persistent local drive
+docker run --name baseline-pyapp-docker-remote-debugging-v2 -it --rm -p 5678:5678 baseline-pyapp/docker-remote-debugging:v2 /bin/bash
+
 pwd
 ls -la
 cat app.py
