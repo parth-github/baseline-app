@@ -3,26 +3,26 @@
 ### Run Commands
 
 ```bash
-docker build -t baseline-pyapp/docker-logging:v1 .
+docker build -t baseline-pyapp/docker-remote-debugging:v2 .
 ```
 
 ## Run with Volume mounting for live edits
 
 ```bash
-docker run --name baseline-pyapp-docker-logging-v1 -v .:/app -p 5678:5678 baseline-pyapp/docker-logging:v1
+docker run --name baseline-pyapp-docker-remote-debugging-v2 -v .:/app -p 5678:5678 baseline-pyapp/docker-remote-debugging:v2
 
 
 ## Run Interactively
 
 ```bash
-docker exec -it baseline-pyapp-docker-logging-v1 /bin/bash
+docker exec -it baseline-pyapp-docker-remote-debugging-v2 /bin/bash
 ```
 
 ## OR
 
 ```bash
 
-docker run --name baseline-pyapp-docker-logging-v1 -it -v .:/app -p 5678:5678 baseline-pyapp/docker-logging:v1 /bin/bash
+docker run --name baseline-pyapp-docker-remote-debugging-v2 -it --rm -v .:/app -p 5678:5678 baseline-pyapp/docker-remote-debugging:v2 /bin/bash
 
 pwd
 ls -la

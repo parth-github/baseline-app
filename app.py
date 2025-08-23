@@ -1,5 +1,6 @@
 import logging
 import os
+import debugpy
 
 # Ensure 'logs' directory exists
 os.makedirs("logs", exist_ok=True)
@@ -12,7 +13,17 @@ logging.basicConfig(
     format="%(asctime)s %(levelname)s %(message)s"
 )
 
-logging.log(logging.INFO, "#🚀 Start Calculation! ")
+logging.log(logging.INFO, "# Log debug info to a file")
+debugpy.log_to("logs/debugpy")
+logging.log(logging.INFO, "# Allow debugger to attach")
+debugpy.listen(("0.0.0.0", 5678))
+print("⏳ Waiting for debugger to attach...")
+logging.log(logging.INFO, "# Pause the program until a remote debugger is attached")
+logging.log(logging.INFO, "# ⏳ Waiting for debugger to attach...")
+debugpy.wait_for_client()
+# Now you can set breakpoints in VS Code and step through
+print("Debugger is attached! 🚀")
+logging.log(logging.INFO, "#🚀 Debugger is attached! ")
 
 
 
@@ -28,10 +39,13 @@ def main():
     result = calculate_sum(numbers)
     print(f"Final result: {result}")
     
-    logging.log(logging.INFO, "# This line will cause our program to crash if dividing by 0!")
+    # programmatic breakpoint
+    debugpy.breakpoint()
+    logging.log(logging.INFO, "# Programmatic breakpoint hit. Inspect variables in VS Code.")
+    print("Hit the breakpoint! Inspect variables in VS Code.")
 
-    # This line will cause our program to crash if dividing by 0!!
-    division_result = 10 / 5
+    # This line will cause our program to crash!
+    division_result = 10 / 0
     print(f"Division result: {division_result}")
 
 if __name__ == "__main__":
