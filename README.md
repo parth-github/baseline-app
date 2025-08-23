@@ -1,26 +1,19 @@
-# Python Debugger in Docker
+# Python App in Docker with Logging
 
 Run Commands
 
 ```bash
-docker build -t my-python-app .
-docker run my-python-app
+docker build -t pyapp-integration/logging:v2 .
 ```
 
 ## Run Interactively
 
 ```bash
-docker run -it my-python-app /bin/bash
-# See what directory you're in
+docker run --name pyapp-integration-logging-v2 -it -v .:/app -p 5678:5678 pyapp-integration/logging:v2 /bin/bash
+
 pwd
-
-# List files in the current directory
 ls -la
-
-# Look at your Python file
 cat app.py
-
-# Run your Python program
 python3 app.py
  
 # You'll also see the error:
@@ -47,15 +40,6 @@ ZeroDivisionError: division by zero
 docker run -it -v $(pwd):/app my-python-app /bin/bash
 ```
 
-## Connecting a Remote Debugger from Your IDE
-
-```python
-# In your Python code, add the following lines to enable remote debugging
-import debugpy
-debugpy.listen(("0.0.0.0", 5678))
-debugpy.wait_for_client()
-```
-
 ### Run with DockerfileRemoteDebugger
 
 ```bash
@@ -71,68 +55,3 @@ docker run --name debug-python-function-v1 -v .:/app -p 5678:5678 debug/python-f
 
 docker exec -it debug-python-function-v1 /bin/bash
 ```
-
-Now in VS Code, you can set up a debug configuration (in .vscode/launch.json) to connect to the container:
-
-```json
-{
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "Python: Attach using Debugpy",
-            "type": "debugpy",
-            "request": "attach",
-            "connect": {
-                "host": "localhost",
-                "port": 5678
-            }
-        }
-    ]
-}
-```
-
-## Key Debugging Features You’ll Use
-
-- Breakpoints → stop at a specific line.
-
-- Step In / Step Out / Step Over → navigate code execution.
-
-- Watch Variables → track variable changes live.
-
-- Call Stack → see which function calls led here.
-
-- Conditional Breakpoints → stop only if condition is true:
-
-```python
-debugpy.breakpoint()   # programmatic breakpoint
-```
-
-## Common Debugging Problems and Solutions
-
-### ⚠️ "My program works on my computer but not in Docker"
-
-This usually means there's a difference in the environment. Check:
-
-Python version differences.
-Missing dependencies.
-Different file paths.
-Environment variables.
-File permissions.
-
-### ⚠️ "I can't see my print statements"
-
-Use python -u to avoid output buffering.
-Make sure you're running with -it if you want interactive output.
-Check if your program is actually running as intended (maybe it's exiting early).
-
-### ⚠️ "My changes aren't showing up"
-
-Make sure you're using volume mounting (-v).
-Check that you're editing the right file.
-Verify the file is copied into the container.
-
-### ⚠️ "The container exits immediately"
-
-Run with /bin/bash to inspect the container's state.
-Check the error messages with docker logs container_name.
-Make sure your CMD in the Dockerfile is correct.
