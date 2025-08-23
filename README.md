@@ -1,57 +1,36 @@
-# Python App in Docker with Logging
+# Debugging Python App in Docker with Logging
 
-### Run Commands
+## Launch Mode - VS Code
 
-```bash
-docker build -t baseline-pyapp/docker-remote-debugging:v2 .
-```
+## Local
 
-## Run with Volume mounting for live edits
+1. Install the `debugpy` package:
 
 ```bash
-docker run --name baseline-pyapp-docker-remote-debugging-v2 -v .:/app -p 5678:5678 baseline-pyapp/docker-remote-debugging:v2
+   pip install debugpy
+   ```
 
-
-## Run Interactively
-
-```bash
-docker exec -it baseline-pyapp-docker-remote-debugging-v2 /bin/bash
-```
-
-## OR
+2. Start your script with the `debugpy` module:
 
 ```bash
-
-docker run --name baseline-pyapp-docker-remote-debugging-v2 -it --rm -v .:/app -p 5678:5678 baseline-pyapp/docker-remote-debugging:v2 /bin/bash
-
-# Without mounting persistent local drive
-docker run --name baseline-pyapp-docker-remote-debugging-v2 -it --rm -p 5678:5678 baseline-pyapp/docker-remote-debugging:v2 /bin/bash
-
-pwd
-ls -la
-cat app.py
-python app.py
- 
-# You'll also see the error:
-
-root@fd1d0355b9e2:/app# python3 app.py
-Adding 1, total is now 1
-Adding 2, total is now 3
-Adding 3, total is now 6
-Adding 4, total is now 10
-Adding 5, total is now 15
-Final result: 15
-Traceback (most recent call last):
-  File "/app/app.py", line 18, in 
-    main()
-  File "/app/app.py", line 14, in main
-    division_result = 10 / 0
-                      ~~~^~~
-ZeroDivisionError: division by zero
-```
+   python -m debugpy --listen 5678 --wait-for-client my_script.py
+   ```
 
 
 
-```bash
-docker run -it -v $(pwd):/app my-python-app /bin/bash
+1. Basic Debugging (Launch Mode) → you run your script directly with debugging enabled.
+
+2. Debugging Inside Your Code (Attach Mode) → you add debugpy to your Python code so the debugger can connect later (useful for containers, Airflow, Spark jobs, etc.).
+
+```plaintext
+- Mode 1 — --wait-for-client
+- Development / CI debugging → ✅ Mode 1 (--wait-for-client)
+- python -m debugpy --listen 0.0.0.0:5678 --wait-for-client buggy_calculator_cmd_debug.py
+
+- Mode 2 — listen only (non-blocking)
+- Staging / Production hot debugging → ✅ Mode 2 (non-blocking)
+- python -m debugpy --listen 0.0.0.0:5678 buggy_calculator_cmd_debug.py
+
+- Mode 3 - Pythonic
+- python buggy_calculator_pythonic_debug.py
 ```
