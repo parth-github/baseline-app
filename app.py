@@ -46,6 +46,7 @@ def main():
 
     # This line will cause our program to crash!
     division_result = 10 / 0
+    #division_result = 10/5
     print(f"Division result: {division_result}")
 
 if __name__ == "__main__":
