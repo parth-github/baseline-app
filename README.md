@@ -1,7 +1,7 @@
 # Testing
 
 ```bash
-pytest --cov=app --cov-report=xml
+pytest --cov=app --cov-report=html
 ```
 
 # To run sonar in Docker
