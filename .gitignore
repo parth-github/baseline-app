@@ -1,2 +1,8 @@
 __pycache__/
 logs/
+*.zip
+.venv/
+.scannerwork/
+.sonarlint/
+.pytest_cache/
+.vscode/
